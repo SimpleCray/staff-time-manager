@@ -1,0 +1,17 @@
+@import '../abstract/variables';
+
+.default-button {
+    border-radius: 4px;
+    height: 30px;
+    width: 40px;
+    border: 1px solid $blue;
+    color: $blue;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+.default-button:hover {
+    background-color: $lightestBlue;
+}
