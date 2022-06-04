@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { showMessage } from '../../redux/message/message.actions';
+import { Calendar } from './Calendar';
 import { Header } from './Header';
 
 export const Home = () => {
@@ -13,6 +14,7 @@ export const Home = () => {
         <div className="radial-background home-page">
             <div className="main-container">
                 <Header/>
+                <Calendar/>
             </div>
         </div>
     );

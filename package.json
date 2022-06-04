@@ -17,6 +17,7 @@
     "@types/react-redux": "^7.1.24",
     "axios": "^0.27.2",
     "axios-mock-adapter": "^1.21.1",
+    "dates-generator": "^1.0.4",
     "moment": "^2.29.3",
     "node-sass": "^7.0.1",
     "react": "^18.1.0",
