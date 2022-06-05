@@ -61,6 +61,8 @@ export const calculateFinalDates = (array: any, getCurrentWeekIndex = false) => 
     return { finalDates, start, end, currentWeekIndex };
 };
 
+export const hourToTimes = (hour: string, format: string) => new Date(moment(hour, format).format('YYYY-MM-DD HH:mm:ss')).getTime();
+
 export const getWeeksOfYear = (currentYear = new Date().getFullYear()) => {
     const array = new Array(12);
     array[0] = datesGenerator({ month: 0, year: currentYear, startingDay: 1 });
@@ -72,9 +74,9 @@ export const getWeeksOfYear = (currentYear = new Date().getFullYear()) => {
     const tempWeeks = [];
     for (let i = 0; i < finalDates.length; i++) {
         if (currentWeekIndex === i) {
-            tempWeeks.push({ isSelected: false, dates: finalDates[i], currentWeek: true, year: currentYear });
+            tempWeeks.push({ dates: finalDates[i], currentWeek: true, year: currentYear });
         } else {
-            tempWeeks.push({ isSelected: false, dates: finalDates[i], year: currentYear });
+            tempWeeks.push({ dates: finalDates[i], year: currentYear });
         }
     }
     return tempWeeks;
@@ -85,3 +87,91 @@ export const getMonday = (date: Date) => {
     const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
     return new Date(date.setDate(diff));
 };
+
+type Schedule = {
+    [k: string]: Array<Object>;
+};
+
+export const calculateAvailableTimes = (currentWeek: any, workingHours: Array<Object>, schedule: Schedule) => {
+    const times = [];
+    currentWeek.dates.forEach((date: { date: number; month: number; year: number; jsDate: string }) => {
+        const key = moment(date.jsDate).format('YYYY-MM-DD');
+        const scheduleOnDate: any = schedule[key];
+        if (scheduleOnDate) {
+            const sorted = scheduleOnDate.sort((a: any, b: any) => (hourToTimes(a.start, 'HH:mm:ss') < hourToTimes(b.start, 'HH:mm:ss') ? -1 : 1));
+            console.log('sorted');
+            console.log(sorted);
+        }
+    });
+};
+
+export const testCalculateAvailableTimes = () => {
+    function giveUtc(start: string) {
+        var t = moment().format('YYYY-MM-DD');
+        var t1 = t + ' ' + start;
+        return moment(t1, 'YYYY-MM-DD hh:mm:ss').format();
+    }
+    
+    const timeRange = [
+        {start: '10:00:00', end: '12:30:00'},
+        {start: '16:00:00', end: '16:30:00'},
+        {start: '13:00:00', end: '15:00:00'},
+    ];
+    
+    timeRange.sort((a, b) => {
+        var utcA = giveUtc(a.start);
+        var utcB = giveUtc(b.start);
+        if (utcA < utcB) {
+            return -1;
+        }
+        if (utcA > utcB) {
+            return 1;
+        }
+        return 0;
+    });
+    const availableTimeArray: any = [];
+    
+    let startTimeMinimum = moment(giveUtc('09:00:00'));
+    let endTimeFarthest = moment(giveUtc('18:00:00'));
+    timeRange.forEach((element, index) => {
+        let currentEndTime = moment(giveUtc(element.end));
+        const currentStartTime = moment(giveUtc(element.start));
+        if (currentStartTime.isBefore(startTimeMinimum)) {
+            startTimeMinimum = currentStartTime;
+        }
+        if (currentEndTime.isAfter(endTimeFarthest)) {
+            endTimeFarthest = currentEndTime;
+        }
+        /* console.log(startTimeMinimum.format("h:mm A"), endTimeFarthest.format("h:mm A")) */
+        if (index === timeRange.length - 1) {
+            if (timeRange.length === 1) {
+                availableTimeArray.push({
+                    start: '09:00:00',
+                    end: currentStartTime.format('hh:mm:ss'),
+                });
+            }
+            availableTimeArray.push({
+                //start: currentEndTime.format("h:mm A"),
+                start: endTimeFarthest.format('hh:mm:ss'),
+                end: '18:00:00',
+            });
+        } else {
+            const nextBusyTime = timeRange[index + 1];
+            const nextStartTime = moment(giveUtc(nextBusyTime.start));
+            if (index === 0) {
+                availableTimeArray.push({
+                    start: '09:00:00',
+                    end: currentStartTime.format('hh:mm:ss'),
+                });
+            }
+            let endTimeToCompare = currentEndTime.isBefore(endTimeFarthest) ? endTimeFarthest : currentEndTime;
+            if (endTimeToCompare.isBefore(nextStartTime)) {
+                availableTimeArray.push({
+                    start: endTimeToCompare.format('hh:mm:ss'),
+                    end: nextStartTime.format('hh:mm:ss'),
+                });
+            }
+        }
+    });
+    console.log(availableTimeArray);    
+}

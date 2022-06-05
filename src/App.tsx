@@ -5,6 +5,7 @@ import './App.css';
 import { Home } from './components/pages/Home';
 import Message from './components/shared/Message';
 import './scss/app.scss';
+import './mock-db'
 
 function App() {
     return (

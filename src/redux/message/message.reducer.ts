@@ -6,7 +6,7 @@ const initialState = {
     duration: 5000,
 };
 
-const messageReducer = (state = initialState, action: { type: any; payload: { message: any; variant: any; }; }) => {
+const messageReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         
         case MessageActionTypes.SHOW_MESSAGE:

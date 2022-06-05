@@ -6,6 +6,8 @@ const initialState = {
     startTime: '09:00',
     endTime: '18:00',
     selectedDay: new Date(),
+    workingHours: null,
+    schedule: null,
 };
 
 const appReducer = (state = initialState, action: Action) => {
@@ -14,6 +16,13 @@ const appReducer = (state = initialState, action: Action) => {
             return {
                 ...state,
                 testAppReducer: action.payload,
+            };
+
+        case AppActionTypes.GET_WORKING_HOURS:
+            return {
+                ...state,
+                workingHours: action.payload.workingHours,
+                schedule: action.payload.schedule,
             };
 
         default:
