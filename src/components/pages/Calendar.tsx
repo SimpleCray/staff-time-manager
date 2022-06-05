@@ -1,21 +1,48 @@
 import moment from 'moment';
 import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { CALENDAR_STEP_HEIGHT, CALENDAR_STEP_WIDTH, DAYS_OF_WEEK } from '../../shared/constants';
 import { getMonday, getTimesArray, getWeekNumber, getWeeksOfYear } from '../../shared/utils';
 
 export const Calendar = () => {
     const { startTime, endTime, selectedDay } = useSelector((state: any) => state.app);
     const selectedDate = new Date(selectedDay);
     const currentYear = selectedDate.getFullYear();
-    const selectedWeek = getWeekNumber(selectedDate.getMonth() + 1, selectedDate.getDate(), selectedDate.getFullYear());
-    const [weeks, setWeeks] = useState(getWeeksOfYear(currentYear));
-    console.log(weeks)
+    const weeks = useMemo(() => getWeeksOfYear(currentYear), [currentYear]);
+    const selectedWeekNumber = getWeekNumber(selectedDate.getMonth() + 1, selectedDate.getDate(), selectedDate.getFullYear());
+    const selectedWeek = weeks[selectedWeekNumber - 1];
     const [year, setYear] = useState(currentYear);
     const monday = getMonday(new Date());
     const hours = useMemo(() => getTimesArray(startTime, endTime, 30), [startTime, endTime]);
-    console.log('hours')
-    console.log(hours.map(item => moment(item, ['HH']).format('hh:mm A')))
+    const getVerticalPositionMap = (hours: Array<string>) =>
+        hours.map((hour, index) => ({ key: hour, value: index * CALENDAR_STEP_HEIGHT, label: moment(hour, ['hh:mm']).format('H:mm A') }));
+    const verticalPositionMap = useMemo(() => getVerticalPositionMap(hours), [hours]);
     return (
-        <div>Calendar</div>
+        <div className='calendar-container'>
+            <div className='hours-container'>
+                <div className='hour' style={{ height: 50 }} />
+                {verticalPositionMap.map((hour, hourIndex) => (
+                    <React.Fragment key={hourIndex}>
+                        <div className='hour' key={hourIndex} style={{ height: CALENDAR_STEP_HEIGHT }}>
+                            <span>{hour.label}</span>
+                        </div>
+                        <hr className='hour-horizontal-line'/>
+                    </React.Fragment>
+                ))}
+            </div>
+            <div className='days-container'>
+                {selectedWeek.dates.map((day: any, dayIndex: number) => (
+                    <React.Fragment key={dayIndex}>
+                        <div className='day' style={{ width: 'calc(100%/7)', minWidth: CALENDAR_STEP_WIDTH }}>
+                            <div className='number'>{new Date(day.jsDate).getDate()}</div>
+                            <div className='text'>{DAYS_OF_WEEK[new Date(day.jsDate).getDay()]}</div>
+                        </div>
+                        {dayIndex !== selectedWeek.dates.length - 1 && (
+                            <hr className='day-vertical-line' style={{ height: verticalPositionMap.length * CALENDAR_STEP_HEIGHT + 58 }} />
+                        )}
+                    </React.Fragment>
+                ))}
+            </div>
+        </div>
     );
 };

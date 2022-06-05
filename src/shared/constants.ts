@@ -9,3 +9,6 @@ export const COLOR_CONST = {
     DARK_GREY: '#393e46',
     BLACK_ALMOST: '#222831',
 }
+export const CALENDAR_STEP_HEIGHT = 30;
+export const CALENDAR_STEP_WIDTH = 70;
+export const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
