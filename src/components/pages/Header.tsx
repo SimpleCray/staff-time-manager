@@ -3,16 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { getWeekNumber } from '../../shared/utils';
 import { Tooltip } from '../shared/Tooltip';
 
 export const Header = () => {
-    const dispatch = useDispatch();
-    const state = useSelector((state: any) => state);
-    console.log('state');
-    console.log(state);
     return (
         <div className='flex justify-between align-center'>
-            <div className='text-30 bold color-white'>Weekly schedule</div>
+            <div className='text-30 bold color-white'>Weekly Schedule</div>
             <div className='flex'>
                 <Tooltip content='select hours'>
                     <div className='default-button' style={{ marginRight: 10 }}>

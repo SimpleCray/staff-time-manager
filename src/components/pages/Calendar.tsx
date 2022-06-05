@@ -17,16 +17,17 @@ export const Calendar = () => {
     const getVerticalPositionMap = (hours: Array<string>) =>
         hours.map((hour, index) => ({ key: hour, value: index * CALENDAR_STEP_HEIGHT, label: moment(hour, ['hh:mm']).format('H:mm A') }));
     const verticalPositionMap = useMemo(() => getVerticalPositionMap(hours), [hours]);
+    const calendarHeight = verticalPositionMap.length * CALENDAR_STEP_HEIGHT + 100;
     return (
-        <div className='calendar-container'>
+        verticalPositionMap ? (<div className='calendar-container'>
             <div className='hours-container'>
-                <div className='hour' style={{ height: 50 }} />
+                <div className='hour' style={{ height: 50, borderBottom: '1px solid var(--lighterBlue)' }} />
                 {verticalPositionMap.map((hour, hourIndex) => (
                     <React.Fragment key={hourIndex}>
-                        <div className='hour' key={hourIndex} style={{ height: CALENDAR_STEP_HEIGHT }}>
+                        <div className='hour' key={hourIndex} style={{ height: CALENDAR_STEP_HEIGHT, fontWeight: hour.label.includes('30') ? 'normal' : 'bold' }}>
                             <span>{hour.label}</span>
                         </div>
-                        <hr className='hour-horizontal-line'/>
+                        <hr className='hour-horizontal-line' />
                     </React.Fragment>
                 ))}
             </div>
@@ -37,12 +38,15 @@ export const Calendar = () => {
                             <div className='number'>{new Date(day.jsDate).getDate()}</div>
                             <div className='text'>{DAYS_OF_WEEK[new Date(day.jsDate).getDay()]}</div>
                         </div>
-                        {dayIndex !== selectedWeek.dates.length - 1 && (
-                            <hr className='day-vertical-line' style={{ height: verticalPositionMap.length * CALENDAR_STEP_HEIGHT + 58 }} />
-                        )}
+                        {dayIndex !== selectedWeek.dates.length - 1 && <hr className='day-vertical-line' style={{height: calendarHeight}}/>}
                     </React.Fragment>
                 ))}
             </div>
-        </div>
+            <div className='schedule-container' id='schedule-container' 
+            // style={{ height: calendarHeight }}
+            >
+                
+            </div>
+        </div>) : null
     );
 };
