@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getWeekNumber } from '../../shared/utils';
-import { Calendar } from './Calendar';
-import { Header } from './Header';
+import { getWeekNumber } from '../../../shared/utils';
+import { Calendar } from './components/Calendar';
+import { Header } from './components/Header';
 
 export const Home = () => {
     const { selectedDay } = useSelector((state: any) => state.app);

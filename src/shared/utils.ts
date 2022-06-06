@@ -61,7 +61,7 @@ export const calculateFinalDates = (array: any, getCurrentWeekIndex = false) => 
     return { finalDates, start, end, currentWeekIndex };
 };
 
-export const hourToTimes = (hour: string, format: string) => new Date(moment(hour, format).format('YYYY-MM-DD HH:mm:ss')).getTime();
+export const hourToTimes = (hour: string) => new Date(moment(hour, 'HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')).getTime();
 
 export const getWeeksOfYear = (currentYear = new Date().getFullYear()) => {
     const array = new Array(12);
@@ -93,85 +93,36 @@ type Schedule = {
 };
 
 export const calculateAvailableTimes = (currentWeek: any, workingHours: Array<Object>, schedule: Schedule) => {
-    const times = [];
+    const times: { key: string; array: []; }[] = [];
     currentWeek.dates.forEach((date: { date: number; month: number; year: number; jsDate: string }) => {
         const key = moment(date.jsDate).format('YYYY-MM-DD');
         const scheduleOnDate: any = schedule[key];
         if (scheduleOnDate) {
-            const sorted = scheduleOnDate.sort((a: any, b: any) => (hourToTimes(a.start, 'HH:mm:ss') < hourToTimes(b.start, 'HH:mm:ss') ? -1 : 1));
-            console.log('sorted');
-            console.log(sorted);
-        }
-    });
-};
-
-export const testCalculateAvailableTimes = () => {
-    function giveUtc(start: string) {
-        var t = moment().format('YYYY-MM-DD');
-        var t1 = t + ' ' + start;
-        return moment(t1, 'YYYY-MM-DD hh:mm:ss').format();
-    }
-    
-    const timeRange = [
-        {start: '10:00:00', end: '12:30:00'},
-        {start: '16:00:00', end: '16:30:00'},
-        {start: '13:00:00', end: '15:00:00'},
-    ];
-    
-    timeRange.sort((a, b) => {
-        var utcA = giveUtc(a.start);
-        var utcB = giveUtc(b.start);
-        if (utcA < utcB) {
-            return -1;
-        }
-        if (utcA > utcB) {
-            return 1;
-        }
-        return 0;
-    });
-    const availableTimeArray: any = [];
-    
-    let startTimeMinimum = moment(giveUtc('09:00:00'));
-    let endTimeFarthest = moment(giveUtc('18:00:00'));
-    timeRange.forEach((element, index) => {
-        let currentEndTime = moment(giveUtc(element.end));
-        const currentStartTime = moment(giveUtc(element.start));
-        if (currentStartTime.isBefore(startTimeMinimum)) {
-            startTimeMinimum = currentStartTime;
-        }
-        if (currentEndTime.isAfter(endTimeFarthest)) {
-            endTimeFarthest = currentEndTime;
-        }
-        /* console.log(startTimeMinimum.format("h:mm A"), endTimeFarthest.format("h:mm A")) */
-        if (index === timeRange.length - 1) {
-            if (timeRange.length === 1) {
-                availableTimeArray.push({
-                    start: '09:00:00',
-                    end: currentStartTime.format('hh:mm:ss'),
-                });
-            }
-            availableTimeArray.push({
-                //start: currentEndTime.format("h:mm A"),
-                start: endTimeFarthest.format('hh:mm:ss'),
-                end: '18:00:00',
+            const sortedScheduleOnDate = scheduleOnDate.sort((a: any, b: any) => (hourToTimes(a.start) < hourToTimes(b.start) ? -1 : 1));
+            const availableTimeArray: any = [];
+            const dayData: any = workingHours.find((day: any) => parseInt(day.key) === moment(key, 'YYYY-MM-DD').day());
+            let minStart = hourToTimes(dayData.start);
+            let maxEnd = hourToTimes(dayData.end);
+            sortedScheduleOnDate.forEach((element: any, index: number) => {
+                let currentEndTime = hourToTimes(element.end);
+                const currentStartTime = hourToTimes(element.start);
+                if (currentStartTime > minStart && currentEndTime <= maxEnd) {
+                    availableTimeArray.push({
+                        start: moment(minStart).format('HH:mm:ss'),
+                        end: moment(currentStartTime).format('HH:mm:ss'),
+                    });
+                    minStart = currentEndTime;
+                }
             });
-        } else {
-            const nextBusyTime = timeRange[index + 1];
-            const nextStartTime = moment(giveUtc(nextBusyTime.start));
-            if (index === 0) {
+            const lastEndTime = hourToTimes(availableTimeArray.at(-1).end);
+            if (lastEndTime < maxEnd) {
                 availableTimeArray.push({
-                    start: '09:00:00',
-                    end: currentStartTime.format('hh:mm:ss'),
+                    start: availableTimeArray.at(-1).end,
+                    end: dayData.end,
                 });
             }
-            let endTimeToCompare = currentEndTime.isBefore(endTimeFarthest) ? endTimeFarthest : currentEndTime;
-            if (endTimeToCompare.isBefore(nextStartTime)) {
-                availableTimeArray.push({
-                    start: endTimeToCompare.format('hh:mm:ss'),
-                    end: nextStartTime.format('hh:mm:ss'),
-                });
-            }
+            times.push({key, array: availableTimeArray});
         }
     });
-    console.log(availableTimeArray);    
-}
+    return times;
+};

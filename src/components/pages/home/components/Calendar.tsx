@@ -2,13 +2,16 @@ import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { thunkSendMessage } from '../../redux/app/app.actions';
-import { CALENDAR_STEP_HEIGHT, CALENDAR_STEP_WIDTH, DAYS_OF_WEEK } from '../../shared/constants';
-import { calculateAvailableTimes, getMonday, getTimesArray, getWeekNumber, getWeeksOfYear, testCalculateAvailableTimes } from '../../shared/utils';
+import useWindowSize from '../../../../hook/useWindowSize';
+import { thunkSendMessage } from '../../../../redux/app/app.actions';
+import { AVAILABLE_COLOR, CALENDAR_STEP_HEIGHT, CALENDAR_STEP_WIDTH, DAYS_OF_WEEK } from '../../../../shared/constants';
+import { calculateAvailableTimes, getMonday, getTimesArray, getWeekNumber, getWeeksOfYear } from '../../../../shared/utils';
+import Bar from './Bar';
 
 export const Calendar = () => {
     const dispatch = useDispatch();
     const [availableTimes, setAvailableTimes] = useState([]);
+    const [widthOfDay ,setWidthOfDay] = useState(0);
     const { startTime, endTime, selectedDay, workingHours, schedule } = useSelector((state: any) => state.app);
     const selectedDate = new Date(selectedDay);
     const currentYear = selectedDate.getFullYear();
@@ -19,9 +22,10 @@ export const Calendar = () => {
     // const monday = getMonday(new Date());
     const hours = useMemo(() => getTimesArray(startTime, endTime, 30), [startTime, endTime]);
     const getVerticalPositionMap = (hours: Array<string>) =>
-        hours.map((hour, index) => ({ key: hour, value: index * CALENDAR_STEP_HEIGHT, label: moment(hour, ['hh:mm']).format('H:mm A') }));
+        hours.map((hour, index) => ({ key: moment(hour, ['hh:mm']).format('HH:mm:ss'), value: index * CALENDAR_STEP_HEIGHT, label: moment(hour, ['hh:mm']).format('H:mm A') }));
     const verticalPositionMap = useMemo(() => getVerticalPositionMap(hours), [hours]);
     const calendarHeight = verticalPositionMap.length * CALENDAR_STEP_HEIGHT + 100;
+    const windowSize = useWindowSize();
 
     useEffect(() => {
         if (!workingHours) dispatch<any>(thunkSendMessage());
@@ -29,10 +33,18 @@ export const Calendar = () => {
 
     useEffect(() => {
         if (selectedWeek && workingHours && schedule) {
-            // const times = calculateAvailableTimes(selectedWeek, workingHours, schedule);
-            testCalculateAvailableTimes();
+            const times: any = calculateAvailableTimes(selectedWeek, workingHours, schedule);
+            setAvailableTimes(times);
         }
     },[selectedWeek, workingHours, schedule]);
+
+    useEffect(() => {
+        if (document.querySelector('.day')) {
+            setWidthOfDay(document.querySelector('.day')?.getBoundingClientRect().width || 0);
+        }
+    }, [windowSize]);
+
+    console.log(widthOfDay);
 
     return (
         verticalPositionMap ? (<div className='calendar-container'>
@@ -58,10 +70,19 @@ export const Calendar = () => {
                     </React.Fragment>
                 ))}
             </div>
-            <div className='schedule-container' id='schedule-container' 
-            // style={{ height: calendarHeight }}
-            >
-                
+            <div className='schedule-container' id='schedule-container'>
+                {availableTimes.map((day: { key: string; array: []; }) => (
+                    day.array.map((time: {start: string; end: string}) => (
+                        <Bar
+                            color={AVAILABLE_COLOR}
+                            start={time.start}
+                            end={time.end}
+                            date={day.key}
+                            width={widthOfDay}
+                            verticalPositionMap={verticalPositionMap}
+                        />
+                    ))
+                ))}
             </div>
         </div>) : null
     );

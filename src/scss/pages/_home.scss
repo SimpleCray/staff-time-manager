@@ -26,6 +26,7 @@
         font-size: 14px;
         color: $darkerBlue;
         padding-right: 5px;
+        background: rgba(0, 108, 173, 0.2);
     }
     .hour-horizontal-line {
         margin: 0;
@@ -49,6 +50,7 @@
         border: 1px solid $lighterBlue;
         border-right: none;
         border-left: none;
+        background: $lightestBlue;
     }
     .day .number {
         font-size: 20px;
@@ -65,9 +67,15 @@
         border: none;
         border-left: 1px solid $lighterBlue;
     }
-    .schedule-container{
+    .schedule-container {
         position: absolute;
         width: 100%;
         margin: $dayHeight 0 0px $hourWidth;
+    }
+    .bar-text {
+        font-size: 14px;
+        // font-weight: bold;
+        color: $darkerBlue;
+        margin: 5px;
     }
 }

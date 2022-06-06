@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Router, Switch } from 'react-router-dom';
 import history from './@history';
 import './App.css';
-import { Home } from './components/pages/Home';
+import { Home } from './components/pages/home/Home';
 import Message from './components/shared/Message';
 import './scss/app.scss';
 import './mock-db'

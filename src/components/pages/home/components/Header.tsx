@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { getWeekNumber } from '../../shared/utils';
-import { Tooltip } from '../shared/Tooltip';
+import { Tooltip } from '../../../shared/Tooltip';
 
 export const Header = () => {
     return (
