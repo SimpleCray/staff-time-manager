@@ -43,6 +43,8 @@
 }
 
 // Shared components
+
+// Message
 .message-container {
     position: fixed;
     top: 80px;
@@ -58,10 +60,11 @@
     color: white;
     font-size: 14px;
 }
+
+// Tooltip
 .tooltip {
     position: relative;
 }
-
 .tooltip-content {
     position: absolute;
     background-color: white;
@@ -73,13 +76,11 @@
     border-radius: 4px;
     padding: 6px 10px;
 }
-
 .tooltip-content:before {
     content: '';
     position: absolute;
 }
-
-/* POSITION TOP */
+// Position top
 .tooltip-content.top {
     bottom: 100%;
     left: 50%;
@@ -92,4 +93,51 @@
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-top: 8px solid white;
+}
+// Position right
+.tooltip-content.right {
+    left: 100%;
+    top: 50%;
+    transform: translate(0, -50%);
+    margin-left: 10px;
+}
+.tooltip-content.right:before {
+    right: 100%;
+    top: 50%;
+    margin-top: -8px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid white;
+}
+
+// Position bottom
+.tooltip-content.bottom {
+    top: 100%;
+    left: 50%;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+.tooltip-content.bottom:before {
+    bottom: 100%;
+    left: 50%;
+    margin-left: -4px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+}
+
+// Position left
+.tooltip-content.left {
+    right: 100%;
+    top: 50%;
+    transform: translate(0, -50%);
+    margin-right: 10px;
+}
+.tooltip-content.left:before {
+    left: 100%;
+    top: 50%;
+    margin-top: -8px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid white;
 }

@@ -25,6 +25,12 @@ const appReducer = (state = initialState, action: Action) => {
                 schedule: action.payload.schedule,
             };
 
+        case AppActionTypes.SET_SELECTED_DAY:
+            return {
+                ...state,
+                selectedDay: action.payload,
+            };
+
         default:
             return state;
     }

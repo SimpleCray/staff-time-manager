@@ -44,8 +44,6 @@ export const Calendar = () => {
         }
     }, [windowSize]);
 
-    console.log(widthOfDay);
-
     return (
         verticalPositionMap ? (<div className='calendar-container'>
             <div className='hours-container'>
@@ -72,8 +70,9 @@ export const Calendar = () => {
             </div>
             <div className='schedule-container' id='schedule-container'>
                 {availableTimes.map((day: { key: string; array: []; }) => (
-                    day.array.map((time: {start: string; end: string}) => (
+                    day.array.map((time: {start: string; end: string}, index: number) => (
                         <Bar
+                            key={`${time.start}-${time.end}-${index}`}
                             color={AVAILABLE_COLOR}
                             start={time.start}
                             end={time.end}

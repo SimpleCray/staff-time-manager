@@ -1,4 +1,5 @@
 export const AppActionTypes = {
     TEST_ACTION: '[APP] TEST_ACTION',
     GET_WORKING_HOURS: '[APP] GET_WORKING_HOURS',
+    SET_SELECTED_DAY: '[APP] SET_SELECTED_DAY',
 }

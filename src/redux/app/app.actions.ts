@@ -24,3 +24,8 @@ export const thunkSendMessage =
             console.error(error);
         }
     };
+
+export const setSelectedDay = (value: Date): Action => ({
+    type: AppActionTypes.SET_SELECTED_DAY,
+    payload: value,
+});

@@ -77,4 +77,92 @@
         color: $darkerBlue;
         margin: 5px;
     }
+    .week-calendar {
+        z-index: 5;
+        .year-container {
+            display: 'flex';
+            flex-direction: 'row';
+            justify-content: space-between;
+            align-items: center;
+        }
+        .arrow-container {
+            display: flex;
+            width: auto;
+            margin-bottom: 10px;
+        }
+        .arrow-item {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            font-size: 13px;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+        }
+        .arrow-item:hover {
+            background: $lightWhite;
+            border-radius: 2px;
+        }
+        .arrow {
+            color: $darkGrey;
+            font-size: 13px;
+        }
+        .year {
+            color: black;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0 0 10px 5px;
+        }
+        .week-container {
+            display: flex;
+            flex-wrap: wrap;
+            transition: all 0.3s ease;
+        }
+        .week-item {
+            color: black;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items:center;
+            width: 34px;
+            height: 34px;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+        .week-item:hover {
+            background: $lightWhite;
+        }
+        .circle-current-week {
+            position: absolute;
+            border: 2px solid $blue;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+        }
+        .footer-text {
+            margin: 20px 0 5px 180px;
+            color: black;
+            font-size: 12;
+            cursor: pointer;
+        }
+        .footer-text:hover {
+            color: $blue;
+        }
+        .footer-text-disabled {
+            margin: 20px 0 5px 180px;
+            color: $midGrey;
+            font-size: 12px;
+        }
+        .selected {
+            background: $blue;
+            color: white;
+        }
+    }
+
 }
