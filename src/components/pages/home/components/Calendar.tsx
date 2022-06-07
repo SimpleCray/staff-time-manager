@@ -4,22 +4,20 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import useWindowSize from '../../../../hook/useWindowSize';
 import { thunkSendMessage } from '../../../../redux/app/app.actions';
-import { AVAILABLE_COLOR, CALENDAR_STEP_HEIGHT, CALENDAR_STEP_WIDTH, DAYS_OF_WEEK } from '../../../../shared/constants';
-import { calculateAvailableTimes, getMonday, getTimesArray, getWeekNumber, getWeeksOfYear } from '../../../../shared/utils';
+import { AVAILABLE_COLOR, CALENDAR_SHOW_TYPE, CALENDAR_STEP_HEIGHT, CALENDAR_STEP_WIDTH, DAYS_OF_WEEK, DAYS_OF_WEEK_SHORTEN, SCHEDULE_COLOR } from '../../../../shared/constants';
+import { calculateAvailableTimes, getMonday, getScheduleOfWeek, getTimesArray, getWeekNumber, getWeeksOfYear } from '../../../../shared/utils';
 import Bar from './Bar';
 
 export const Calendar = () => {
     const dispatch = useDispatch();
     const [availableTimes, setAvailableTimes] = useState([]);
     const [widthOfDay ,setWidthOfDay] = useState(0);
-    const { startTime, endTime, selectedDay, workingHours, schedule } = useSelector((state: any) => state.app);
+    const { startTime, endTime, selectedDay, workingHours, schedule, showType } = useSelector((state: any) => state.app);
     const selectedDate = new Date(selectedDay);
     const currentYear = selectedDate.getFullYear();
     const weeks = useMemo(() => getWeeksOfYear(currentYear), [currentYear]);
     const selectedWeekNumber = getWeekNumber(selectedDate.getMonth() + 1, selectedDate.getDate(), selectedDate.getFullYear());
     const selectedWeek = weeks[selectedWeekNumber - 1];
-    // const [year, setYear] = useState(currentYear);
-    // const monday = getMonday(new Date());
     const hours = useMemo(() => getTimesArray(startTime, endTime, 30), [startTime, endTime]);
     const getVerticalPositionMap = (hours: Array<string>) =>
         hours.map((hour, index) => ({ key: moment(hour, ['hh:mm']).format('HH:mm:ss'), value: index * CALENDAR_STEP_HEIGHT, label: moment(hour, ['hh:mm']).format('H:mm A') }));
@@ -33,10 +31,10 @@ export const Calendar = () => {
 
     useEffect(() => {
         if (selectedWeek && workingHours && schedule) {
-            const times: any = calculateAvailableTimes(selectedWeek, workingHours, schedule);
+            const times: any = showType === CALENDAR_SHOW_TYPE.AVAILABLE_TIME ? calculateAvailableTimes(selectedWeek, workingHours, schedule) : getScheduleOfWeek(selectedWeek, schedule);;
             setAvailableTimes(times);
         }
-    },[selectedWeek, workingHours, schedule]);
+    },[selectedWeek, workingHours, schedule, showType]);
 
     useEffect(() => {
         if (document.querySelector('.day')) {
@@ -47,7 +45,7 @@ export const Calendar = () => {
     return (
         verticalPositionMap ? (<div className='calendar-container'>
             <div className='hours-container'>
-                <div className='hour' style={{ height: 50, borderBottom: '1px solid var(--lighterBlue)' }} />
+                {/* <div className='hour' style={{ height: 50, borderBottom: '1px solid var(--lighterBlue)' }} /> */}
                 {verticalPositionMap.map((hour, hourIndex) => (
                     <React.Fragment key={hourIndex}>
                         <div className='hour' key={hourIndex} style={{ height: CALENDAR_STEP_HEIGHT, fontWeight: hour.label.includes('30') ? 'normal' : 'bold' }}>
@@ -60,9 +58,9 @@ export const Calendar = () => {
             <div className='days-container'>
                 {selectedWeek.dates.map((day: any, dayIndex: number) => (
                     <React.Fragment key={dayIndex}>
-                        <div className='day' style={{ width: 'calc(100%/7)', minWidth: CALENDAR_STEP_WIDTH }}>
+                        <div className='day' style={{ width: 'calc(100%/7)'}}>
                             <div className='number'>{new Date(day.jsDate).getDate()}</div>
-                            <div className='text'>{DAYS_OF_WEEK[new Date(day.jsDate).getDay()]}</div>
+                            <div className='text'>{DAYS_OF_WEEK_SHORTEN[new Date(day.jsDate).getDay()]}</div>
                         </div>
                         {dayIndex !== selectedWeek.dates.length - 1 && <hr className='day-vertical-line' style={{height: calendarHeight}}/>}
                     </React.Fragment>
@@ -73,12 +71,14 @@ export const Calendar = () => {
                     day.array.map((time: {start: string; end: string}, index: number) => (
                         <Bar
                             key={`${time.start}-${time.end}-${index}`}
-                            color={AVAILABLE_COLOR}
+                            color={showType === CALENDAR_SHOW_TYPE.AVAILABLE_TIME ? AVAILABLE_COLOR : SCHEDULE_COLOR}
                             start={time.start}
                             end={time.end}
                             date={day.key}
                             width={widthOfDay}
                             verticalPositionMap={verticalPositionMap}
+                            startTime={startTime}
+                            endTime={endTime}
                         />
                     ))
                 ))}

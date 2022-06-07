@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 /// <reference path='../modules/dates-generator.d.ts' />
 import moment from 'moment';
 import { datesGenerator } from 'dates-generator';
@@ -92,36 +93,69 @@ type Schedule = {
     [k: string]: Array<Object>;
 };
 
-export const calculateAvailableTimes = (currentWeek: any, workingHours: Array<Object>, schedule: Schedule) => {
-    const times: { key: string; array: []; }[] = [];
-    currentWeek.dates.forEach((date: { date: number; month: number; year: number; jsDate: string }) => {
+type JsDate = {
+    date: number; month: number; year: number; jsDate: string ,
+}
+
+export const getScheduleOfWeek = (selectedWeek: any, schedule: Schedule) => {
+    const times: { key: string; array: [] }[] = [];
+    selectedWeek.dates.forEach((date: JsDate) => {
         const key = moment(date.jsDate).format('YYYY-MM-DD');
         const scheduleOnDate: any = schedule[key];
         if (scheduleOnDate) {
-            const sortedScheduleOnDate = scheduleOnDate.sort((a: any, b: any) => (hourToTimes(a.start) < hourToTimes(b.start) ? -1 : 1));
+            times.push({ key, array: scheduleOnDate });
+        }
+    })
+    return times;
+}
+
+export const calculateAvailableTimes = (currentWeek: any, workingHours: Array<Object>, schedule: Schedule) => {
+    const times: { key: string; array: [] }[] = [];
+    currentWeek.dates.forEach((date: JsDate) => {
+        const key = moment(date.jsDate).format('YYYY-MM-DD');
+        const scheduleOnDate: any = schedule[key];
+        if (scheduleOnDate) {
+            let sortedScheduleOnDate = [...scheduleOnDate.sort((a: any, b: any) => (hourToTimes(a.start) < hourToTimes(b.start) ? -1 : 1))];
+            let maxScheduleEnd = scheduleOnDate.sort((a: any, b: any) => (hourToTimes(a.end) < hourToTimes(b.end) ? -1 : 1)).at(-1).end;
             const availableTimeArray: any = [];
             const dayData: any = workingHours.find((day: any) => parseInt(day.key) === moment(key, 'YYYY-MM-DD').day());
             let minStart = hourToTimes(dayData.start);
             let maxEnd = hourToTimes(dayData.end);
-            sortedScheduleOnDate.forEach((element: any, index: number) => {
-                let currentEndTime = hourToTimes(element.end);
-                const currentStartTime = hourToTimes(element.start);
-                if (currentStartTime > minStart && currentEndTime <= maxEnd) {
-                    availableTimeArray.push({
-                        start: moment(minStart).format('HH:mm:ss'),
-                        end: moment(currentStartTime).format('HH:mm:ss'),
-                    });
-                    minStart = currentEndTime;
-                }
-            });
-            const lastEndTime = hourToTimes(availableTimeArray.at(-1).end);
+            let scheduleToCompare: any = [];
+            while (sortedScheduleOnDate.length) {
+                const loopedElements: any = [];
+                sortedScheduleOnDate.forEach((element: any) => {
+                    const currentStartTime = hourToTimes(element.start);
+                    const currentEndTime = hourToTimes(element.end);
+
+                    if (currentStartTime === minStart) minStart = currentEndTime;
+
+                    if (currentStartTime > minStart && currentEndTime <= maxEnd) {
+                        loopedElements.push(element);
+                        // console.warn(`addStart: ${moment(minStart).format('HH:mm:ss')}, addEnd: ${moment(currentStartTime).format('HH:mm:ss')}`);
+                        availableTimeArray.push({
+                            start: moment(minStart).format('HH:mm:ss'),
+                            end: moment(currentStartTime).format('HH:mm:ss'),
+                        });
+                        if (currentEndTime < maxEnd) minStart = currentEndTime;
+                    }
+                });
+                sortedScheduleOnDate = sortedScheduleOnDate.filter(
+                    (item: { start: string; end: string }) =>
+                        !loopedElements.find((el: { start: string; end: string }) => el.start === item.start && el.end === item.end)
+                );
+                if (JSON.stringify(scheduleToCompare) !== JSON.stringify(sortedScheduleOnDate))
+                    scheduleToCompare = JSON.parse(JSON.stringify(sortedScheduleOnDate));
+                else break;
+            }
+            const lastEndTime = hourToTimes(maxScheduleEnd);
             if (lastEndTime < maxEnd) {
                 availableTimeArray.push({
-                    start: availableTimeArray.at(-1).end,
+                    start: maxScheduleEnd,
                     end: dayData.end,
                 });
             }
-            times.push({key, array: availableTimeArray});
+            times.push({ key, array: availableTimeArray });
         }
     });
     return times;

@@ -1,3 +1,4 @@
+import { CALENDAR_SHOW_TYPE } from '../../shared/constants';
 import { Action } from '../rootReducer';
 import { AppActionTypes } from './app.types';
 
@@ -8,6 +9,7 @@ const initialState = {
     selectedDay: new Date(),
     workingHours: null,
     schedule: null,
+    showType: CALENDAR_SHOW_TYPE.AVAILABLE_TIME,
 };
 
 const appReducer = (state = initialState, action: Action) => {
@@ -29,6 +31,19 @@ const appReducer = (state = initialState, action: Action) => {
             return {
                 ...state,
                 selectedDay: action.payload,
+            };
+
+        case AppActionTypes.SET_START_END_TIME:
+            return {
+                ...state,
+                startTime: action.payload.start,
+                endTime: action.payload.end,
+            };
+
+        case AppActionTypes.SET_CALENDAR_SHOW_TYPE:
+            return {
+                ...state,
+                showType: action.payload,
             };
 
         default:

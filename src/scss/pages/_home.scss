@@ -17,6 +17,8 @@
         max-width: $hourWidth;
         border-right: 1px solid $lighterBlue;
         box-sizing: border-box;
+        padding-top: 19px;
+        background: rgba(0, 108, 173, 0.2);
     }
     .hour {
         display: flex;
@@ -26,7 +28,6 @@
         font-size: 14px;
         color: $darkerBlue;
         padding-right: 5px;
-        background: rgba(0, 108, 173, 0.2);
     }
     .hour-horizontal-line {
         margin: 0;
@@ -77,11 +78,19 @@
         color: $darkerBlue;
         margin: 5px;
     }
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 5;
+        margin-right: 100px;
+    }
     .week-calendar {
         z-index: 5;
+        overflow: hidden;
         .year-container {
-            display: 'flex';
-            flex-direction: 'row';
+            display: flex;
             justify-content: space-between;
             align-items: center;
         }
@@ -93,7 +102,7 @@
         .arrow-item {
             display: flex;
             align-items: center;
-            text-align: center;
+            justify-content: center;
             font-size: 13px;
             width: 28px;
             height: 28px;
@@ -109,7 +118,7 @@
         }
         .year {
             color: black;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
             margin: 0 0 10px 5px;
         }
@@ -146,7 +155,7 @@
             border-radius: 50%;
         }
         .footer-text {
-            margin: 20px 0 5px 180px;
+            margin: 20px 0 10px 180px;
             color: black;
             font-size: 12;
             cursor: pointer;
@@ -155,7 +164,7 @@
             color: $blue;
         }
         .footer-text-disabled {
-            margin: 20px 0 5px 180px;
+            margin: 20px 0 10px 180px;
             color: $midGrey;
             font-size: 12px;
         }
@@ -165,4 +174,54 @@
         }
     }
 
+
+    @media screen and (max-width: 1250px) {
+        .bar-text {
+            font-size: 10px;
+        }
+    }
+
+    @media screen and (max-width: 775px) {
+        .main-container {
+            margin: 50px 50px;
+        }
+        .header-container {
+            margin-right: 80px;
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .main-container {
+            margin: 50px 5px;
+        }
+        .hours-container {
+            min-width: 50px;
+            max-width: 50px;
+        }
+        .schedule-container {
+            position: absolute;
+            margin: $dayHeight 0 0px 50px;
+        }
+        .hour {
+            font-size: 9px;
+        }
+        .day .number {
+            font-size: 18px;
+        }
+        .day .text {
+            font-size: 14px;
+        }
+        .bar-text {
+            font-size: 8px;
+        }
+        .header-container {
+            margin: 0 5px;
+        }
+        .tooltip-content.bottom {
+            left: -226%;
+        }
+        .tooltip-content.bottom:before {
+            left: 92%;
+        }
+    }
 }

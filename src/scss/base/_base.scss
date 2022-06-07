@@ -6,6 +6,10 @@
 //     box-sizing: border-box;
 // }
 
+*::-webkit-scrollbar {
+    display: none;
+}
+
 /* Flex box */
 .flex {
     display: flex;
@@ -109,7 +113,6 @@
     border-bottom: 8px solid transparent;
     border-right: 8px solid white;
 }
-
 // Position bottom
 .tooltip-content.bottom {
     top: 100%;
@@ -125,7 +128,6 @@
     border-right: 8px solid transparent;
     border-bottom: 8px solid white;
 }
-
 // Position left
 .tooltip-content.left {
     right: 100%;
@@ -140,4 +142,17 @@
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
     border-left: 8px solid white;
+}
+.close-tooltip {
+    text-align: right;
+}
+.close-tooltip-icon {
+    cursor: pointer;
+    border: 1px solid $blue;
+    padding: 0 3px;
+    border-radius: 50%;
+    color: $blue;
+}
+.close-tooltip-icon:hover {
+    background: $lighterBlue;
 }

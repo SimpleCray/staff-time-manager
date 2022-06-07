@@ -1,6 +1,18 @@
 @import '../abstract/variables';
 
 .default-button {
+    width: 100px;
+    height: 30px;
+    color: white;
+    background: $blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    box-sizing: border-box;
+}
+.default-icon-button {
     border-radius: 4px;
     height: 30px;
     width: 40px;
@@ -11,7 +23,34 @@
     align-items: center;
     justify-content: center;
     background: white;
+    box-sizing: border-box;
 }
-.default-button:hover {
+.default-icon-button:hover {
     background-color: $lightestBlue;
+}
+
+// Toggle button
+.toggle-button-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid $blue;
+    border-radius: 4px;
+    height: 30px;
+    width: 80px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background: white;
+}
+.toggle-switch {
+    height: 30px;
+    width: 40px;
+    background: $blue;
+    position: absolute;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    z-index: 1;
+}
+.toggle-children {
+    z-index: 2;
 }

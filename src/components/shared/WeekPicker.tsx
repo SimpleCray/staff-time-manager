@@ -7,7 +7,7 @@ import { setSelectedDay } from '../../redux/app/app.actions';
 import { getMonday, getWeekNumber, getWeeksOfYear } from '../../shared/utils';
 import { Tooltip } from './Tooltip';
 
-const WeekCalendar = () => {
+const WeekPicker = () => {
     const dispatch = useDispatch();
     const [direction, setDirection] = useState('none');
     const { selectedDay } = useSelector((state: any) => state.app);
@@ -56,7 +56,12 @@ const WeekCalendar = () => {
                     </div>
                 </div>
             </div>
-            <div className='week-container'>
+            <div className='week-container'
+                style={{
+                    transform: direction !== 'none' ? (direction === 'down' ? 'translate(0, 130%)' : 'translate(0, -130%)') : 'none',
+                    // transform: 'opacity 0.5s',
+                }}
+            >
                 {weeks.map((week, index) => 
                     <div
                         key={index}
@@ -86,4 +91,4 @@ const WeekCalendar = () => {
     )
 };
 
-export default WeekCalendar;
+export default WeekPicker;

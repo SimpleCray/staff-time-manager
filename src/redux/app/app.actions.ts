@@ -29,3 +29,13 @@ export const setSelectedDay = (value: Date): Action => ({
     type: AppActionTypes.SET_SELECTED_DAY,
     payload: value,
 });
+
+export const setStartEndTime = (start: string, end: string): Action => ({
+    type: AppActionTypes.SET_START_END_TIME,
+    payload: {start, end},
+});
+
+export const setCalendarShowType = (type: string): Action => ({
+    type: AppActionTypes.SET_CALENDAR_SHOW_TYPE,
+    payload: type,
+});
