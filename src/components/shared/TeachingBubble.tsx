@@ -17,7 +17,7 @@ export const TeachingBubble: React.FC<TooltipProps> = ({ children, content, posi
     return (
         <div className='tooltip' onClick={() => (!show ? setShow(true) : false)} ref={ref}>
             {show && (
-                <div className={`tooltip-content ${position} small-shadow`}>
+                <div className={`tooltip-content ${position} little-shadow`}>
                     {hasCloseButton && (
                         <div className='close-tooltip'>
                             <FontAwesomeIcon className='close-tooltip-icon' icon={faTimes} onClick={() => setShow(false)} />

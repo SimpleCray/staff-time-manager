@@ -19,16 +19,13 @@ export const Header = () => {
         <div className='header-container'>
             <div className='text-30 bold color-white'>Weekly Schedule</div>
             <div className='flex'>
-                <Tooltip content={showType === CALENDAR_SHOW_TYPE.SCHEDULE ? 'showing schedule' : 'showing available time'} position='top'>
-                    <ToggleButton
-                        toggle={showType === CALENDAR_SHOW_TYPE.SCHEDULE}
-                        onClick={() => dispatch(setCalendarShowType(showType === CALENDAR_SHOW_TYPE.SCHEDULE ? CALENDAR_SHOW_TYPE.AVAILABLE_TIME : CALENDAR_SHOW_TYPE.SCHEDULE ))}
-                        LeftIcon={() => <FontAwesomeIcon icon={faHourglass} style={{color: showType === CALENDAR_SHOW_TYPE.AVAILABLE_TIME ? 'white' : 'var(--blue)'}}/>}
-                        RightIcon={() => <FontAwesomeIcon icon={faCalendarCheck}  style={{color: showType === CALENDAR_SHOW_TYPE.SCHEDULE ? 'white' : 'var(--blue)'}}/>}
-                        onMouseOver={() => false}
-                        styles={{marginRight: 10}}
-                    />
-                </Tooltip>
+                <TeachingBubble content={<WeekPicker />} position='bottom' hasCloseButton={false}>
+                    <Tooltip content='select week' position='top'>
+                        <div className='default-icon-button' style={{ marginRight: 10 }}>
+                            <FontAwesomeIcon icon={faCalendarWeek} />
+                        </div>
+                    </Tooltip>
+                </TeachingBubble>
                 <TeachingBubble content={<HourPicker />} position='bottom' hasCloseButton={true}>
                     <Tooltip content='select hours' position='top'>
                         <div className='default-icon-button' style={{ marginRight: 10 }}>
@@ -36,13 +33,16 @@ export const Header = () => {
                         </div>
                     </Tooltip>
                 </TeachingBubble>
-                <TeachingBubble content={<WeekPicker />} position='bottom' hasCloseButton={false}>
-                    <Tooltip content='select week' position='top'>
-                        <div className='default-icon-button'>
-                            <FontAwesomeIcon icon={faCalendarWeek} />
-                        </div>
-                    </Tooltip>
-                </TeachingBubble>
+                <Tooltip content={showType === CALENDAR_SHOW_TYPE.SCHEDULE ? 'showing schedule' : 'showing available time'} position='top'>
+                    <ToggleButton
+                        toggle={showType === CALENDAR_SHOW_TYPE.SCHEDULE}
+                        onClick={() => dispatch(setCalendarShowType(showType === CALENDAR_SHOW_TYPE.SCHEDULE ? CALENDAR_SHOW_TYPE.AVAILABLE_TIME : CALENDAR_SHOW_TYPE.SCHEDULE ))}
+                        LeftIcon={() => <FontAwesomeIcon icon={faHourglass} style={{color: showType === CALENDAR_SHOW_TYPE.AVAILABLE_TIME ? 'white' : 'var(--blue)'}}/>}
+                        RightIcon={() => <FontAwesomeIcon icon={faCalendarCheck}  style={{color: showType === CALENDAR_SHOW_TYPE.SCHEDULE ? 'white' : 'var(--blue)'}}/>}
+                        onMouseOver={() => false}
+                        styles={{}}
+                    />
+                </Tooltip>
             </div>
         </div>
     );
