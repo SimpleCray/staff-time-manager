@@ -16,6 +16,9 @@ let staffDB = {
             {start: '15:00:00', end: '16:00:00'},
             {start: '12:00:00', end: '13:00:00'},
         ],
+        // '2022-06-07': [
+        //     {start: '10:00:00', end: '14:30:00'},
+        // ],
         '2022-06-08': [
             {start: '10:00:00', end: '12:30:00'},
             {start: '13:00:00', end: '15:00:00'},
@@ -37,5 +40,14 @@ let staffDB = {
 
 mock.onGet('/api/staff/staff-data').reply(() => {
     return [200, staffDB];
+});
+
+mock.onPost('/api/staff/save-schedule').reply((request) => {
+    const {date, schedule} = JSON.parse(request.data);
+    console.log(request.data);
+    console.log(schedule);
+    if (staffDB.schedule[date]) staffDB.schedule[date].push(schedule);
+    else staffDB.schedule[date] = [schedule];
+    return [200];
 });
 

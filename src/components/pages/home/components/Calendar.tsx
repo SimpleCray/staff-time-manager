@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import useWindowSize from '../../../../hook/useWindowSize';
-import { thunkSendMessage } from '../../../../redux/app/app.actions';
+import { getStaffData } from '../../../../redux/app/app.actions';
 import {
     AVAILABLE_COLOR,
     CALENDAR_SHOW_TYPE,
@@ -31,14 +31,14 @@ export const Calendar = () => {
         hours.map((hour, index) => ({
             key: moment(hour, ['hh:mm']).format('HH:mm:ss'),
             value: index * CALENDAR_STEP_HEIGHT,
-            label: moment(hour, ['hh:mm']).format('H:mm A'),
+            label: moment(hour, ['hh:mm']).format('h:mm A'),
         }));
     const verticalPositionMap = useMemo(() => getVerticalPositionMap(hours), [hours]);
     const calendarHeight = verticalPositionMap.length * CALENDAR_STEP_HEIGHT + 100;
     const windowSize = useWindowSize();
 
     useEffect(() => {
-        if (!workingHours) dispatch<any>(thunkSendMessage());
+        if (!workingHours) dispatch<any>(getStaffData());
     }, [workingHours, dispatch]);
 
     useEffect(() => {
@@ -47,6 +47,8 @@ export const Calendar = () => {
                 showType === CALENDAR_SHOW_TYPE.AVAILABLE_TIME
                     ? calculateAvailableTimes(selectedWeek, workingHours, schedule)
                     : getScheduleOfWeek(selectedWeek, schedule);
+            console.log('times')
+            console.log(times)
             setAvailableTimes(times);
         }
     }, [selectedWeek, workingHours, schedule, showType]);
@@ -60,7 +62,6 @@ export const Calendar = () => {
     return verticalPositionMap ? (
         <div className='calendar-container'>
             <div className='hours-container'>
-                {/* <div className='hour' style={{ height: 50, borderBottom: '1px solid var(--lighterBlue)' }} /> */}
                 {verticalPositionMap.map((hour, hourIndex) => (
                     <React.Fragment key={hourIndex}>
                         <div

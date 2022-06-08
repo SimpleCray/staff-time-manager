@@ -18,11 +18,12 @@ export default function Bar({ color, start, end, date, width, verticalPositionMa
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
     const [height, setHeight] = useState(0);
-    const text = `${moment(start, ['HH:mm:ss']).format('H:mm A')} - ${moment(end, ['HH:mm:ss']).format('H:mm A')}`;
+    const text = `${moment(start, ['HH:mm:ss']).format('h:mm A')} - ${moment(end, ['HH:mm:ss']).format('h:mm A')}`;
     const [display, setDisplay] = useState(false);
     const bgColor = `repeating-linear-gradient(-45deg, rgba(${color},1), rgba(${color},1) 24px, rgba(${color},0.4) 24px, rgba(${color},0.4) 48px)`;
 
     useEffect(() => {
+        console.log(`[${date}]start: ${start} - end: ${end}`)
         let startValue = 0;
         let endValue = 0;
         const barStartTime = hourToTimes(start);

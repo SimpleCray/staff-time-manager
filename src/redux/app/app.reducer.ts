@@ -20,7 +20,7 @@ const appReducer = (state = initialState, action: Action) => {
                 testAppReducer: action.payload,
             };
 
-        case AppActionTypes.GET_WORKING_HOURS:
+        case AppActionTypes.GET_STAFF_DATA:
             return {
                 ...state,
                 workingHours: action.payload.workingHours,

@@ -4,6 +4,13 @@
     .main-container {
         margin: 50px 100px;
     }
+    .main-week-label {
+        font-size: 26px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 50px;
+        color: white;
+    }
     .calendar-container {
         margin-top: 20px;
         display: flex;
@@ -84,7 +91,6 @@
         align-items: center;
         position: relative;
         z-index: 5;
-        margin-right: 100px;
     }
     .week-calendar {
         z-index: 5;
@@ -185,14 +191,14 @@
         .main-container {
             margin: 50px 50px;
         }
-        .header-container {
-            margin-right: 80px;
-        }
     }
 
     @media screen and (max-width: 500px) {
+        .main-week-label {
+            margin-top: 20px;
+        }
         .main-container {
-            margin: 50px 5px;
+            margin: 20px 5px;
         }
         .hours-container {
             min-width: 50px;
@@ -212,7 +218,7 @@
             font-size: 14px;
         }
         .bar-text {
-            font-size: 8px;
+            font-size: 7px;
         }
         .header-container {
             margin: 0 5px;

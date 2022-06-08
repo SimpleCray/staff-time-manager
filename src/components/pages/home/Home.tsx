@@ -12,7 +12,7 @@ export const Home = () => {
         <div className="radial-background home-page">
             <div className="main-container">
                 <Header/>
-                <div className='text-26 bold color-white' style={{textAlign: 'center', marginTop: 50, textDecoration: 'italic'}}>Week {selectedWeekNumber}</div>
+                <div className='main-week-label'>Week {selectedWeekNumber}</div>
                 <Calendar/>
             </div>
         </div>

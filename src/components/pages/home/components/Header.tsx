@@ -1,11 +1,12 @@
 import { faCalendarCheck } from '@fortawesome/free-regular-svg-icons';
-import { faCalendarWeek, faClock, faClockFour, faHourglass } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarWeek, faClock, faClockFour, faHourglass, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setCalendarShowType } from '../../../../redux/app/app.actions';
 import { CALENDAR_SHOW_TYPE } from '../../../../shared/constants';
+import AddSchedule from '../../../shared/AddSchedule';
 import HourPicker from '../../../shared/HourPicker';
 import { TeachingBubble } from '../../../shared/TeachingBubble';
 import ToggleButton from '../../../shared/ToggleButton';
@@ -19,6 +20,13 @@ export const Header = () => {
         <div className='header-container'>
             <div className='text-30 bold color-white'>Weekly Schedule</div>
             <div className='flex'>
+                <TeachingBubble content={<AddSchedule />} position='bottom' hasCloseButton={true}>
+                    <Tooltip content='Add schedule' position='top'>
+                        <div className='default-icon-button' style={{ marginRight: 10 }}>
+                            <FontAwesomeIcon icon={faPlusCircle} />
+                        </div>
+                    </Tooltip>
+                </TeachingBubble>
                 <TeachingBubble content={<WeekPicker />} position='bottom' hasCloseButton={false}>
                     <Tooltip content='select week' position='top'>
                         <div className='default-icon-button' style={{ marginRight: 10 }}>
