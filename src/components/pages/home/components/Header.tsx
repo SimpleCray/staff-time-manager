@@ -18,25 +18,25 @@ export const Header = () => {
     const { showType } = useSelector((state: any) => state.app);
     return (
         <div className='header-container'>
-            <div className='text-30 bold color-white'>Weekly Schedule</div>
-            <div className='flex'>
+            <div className='app-name'>Weekly Schedule</div>
+            <div className='flex' style={{width: '80%', justifyContent: 'flex-end'}}>
                 <TeachingBubble content={<AddSchedule />} position='bottom' hasCloseButton={true}>
                     <Tooltip content='Add schedule' position='top'>
-                        <div className='default-icon-button' style={{ marginRight: 10 }}>
+                        <div className='default-icon-button'>
                             <FontAwesomeIcon icon={faPlusCircle} />
                         </div>
                     </Tooltip>
                 </TeachingBubble>
                 <TeachingBubble content={<WeekPicker />} position='bottom' hasCloseButton={false}>
                     <Tooltip content='select week' position='top'>
-                        <div className='default-icon-button' style={{ marginRight: 10 }}>
+                        <div className='default-icon-button' style={{ marginLeft: 10 }}>
                             <FontAwesomeIcon icon={faCalendarWeek} />
                         </div>
                     </Tooltip>
                 </TeachingBubble>
                 <TeachingBubble content={<HourPicker />} position='bottom' hasCloseButton={true}>
                     <Tooltip content='select hours' position='top'>
-                        <div className='default-icon-button' style={{ marginRight: 10 }}>
+                        <div className='default-icon-button' style={{ marginLeft: 10 }}>
                             <FontAwesomeIcon icon={faClock} />
                         </div>
                     </Tooltip>
@@ -48,7 +48,7 @@ export const Header = () => {
                         LeftIcon={() => <FontAwesomeIcon icon={faHourglass} style={{color: showType === CALENDAR_SHOW_TYPE.AVAILABLE_TIME ? 'white' : 'var(--blue)'}}/>}
                         RightIcon={() => <FontAwesomeIcon icon={faCalendarCheck}  style={{color: showType === CALENDAR_SHOW_TYPE.SCHEDULE ? 'white' : 'var(--blue)'}}/>}
                         onMouseOver={() => false}
-                        styles={{}}
+                        styles={{ marginLeft: 10 }}
                     />
                 </Tooltip>
             </div>

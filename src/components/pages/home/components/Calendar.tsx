@@ -47,8 +47,6 @@ export const Calendar = () => {
                 showType === CALENDAR_SHOW_TYPE.AVAILABLE_TIME
                     ? calculateAvailableTimes(selectedWeek, workingHours, schedule)
                     : getScheduleOfWeek(selectedWeek, schedule);
-            console.log('times')
-            console.log(times)
             setAvailableTimes(times);
         }
     }, [selectedWeek, workingHours, schedule, showType]);

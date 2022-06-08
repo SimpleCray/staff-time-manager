@@ -4,6 +4,11 @@
     .main-container {
         margin: 50px 100px;
     }
+    .app-name {
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+    }
     .main-week-label {
         font-size: 26px;
         font-weight: bold;
@@ -222,6 +227,43 @@
         }
         .header-container {
             margin: 0 5px;
+        }
+    }
+
+    @media screen and (max-width: 375px) {
+        .app-name {
+            font-size: 20px;
+        }
+        .default-icon-button {
+            border-radius: 4px;
+            height: 30px;
+            width: 30px;
+        }
+        .toggle-button-container {
+            width: 60px;
+        }
+        .toggle-switch {
+            width: 30px;
+        }
+    }
+
+    @media screen and (max-width: 375px) {
+        .app-name {
+            font-size: 20px;
+        }
+        .default-icon-button {
+            border-radius: 4px;
+            height: 30px;
+            width: 30px;
+        }
+        .toggle-button-container {
+            width: 60px;
+        }
+        .toggle-switch {
+            width: 30px;
+        }
+        .bar-text {
+            margin: 2px;
         }
     }
 }

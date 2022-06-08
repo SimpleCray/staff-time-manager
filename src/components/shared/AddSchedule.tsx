@@ -6,7 +6,7 @@ import { showMessage } from '../../redux/message/message.actions';
 
 const AddSchedule = () => {
     const dispatch = useDispatch();
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
     const [start, setStart] = useState('');
     const [end, setEnd] = useState('');
 

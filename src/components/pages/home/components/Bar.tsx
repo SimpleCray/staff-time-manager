@@ -23,7 +23,6 @@ export default function Bar({ color, start, end, date, width, verticalPositionMa
     const bgColor = `repeating-linear-gradient(-45deg, rgba(${color},1), rgba(${color},1) 24px, rgba(${color},0.4) 24px, rgba(${color},0.4) 48px)`;
 
     useEffect(() => {
-        console.log(`[${date}]start: ${start} - end: ${end}`)
         let startValue = 0;
         let endValue = 0;
         const barStartTime = hourToTimes(start);
@@ -41,7 +40,7 @@ export default function Bar({ color, start, end, date, width, verticalPositionMa
         if (height === 0) {
             setDisplay(false);
         } else {
-            const dayOfDate = new Date(date).getDay() === 0 ? 6 : new Date(date).getDay() - 1; // Hanle sunday
+            const dayOfDate = new Date(date).getDay() === 0 ? 6 : new Date(date).getDay() - 1; // Handle sunday
             // const pageHeight = document.querySelector('.home-page')?.scrollHeight || 0;
             // const clientHeight = document.documentElement.clientHeight;
             // const delta = pageHeight > clientHeight ? -1.5*dayOfDate : dayOfDate; // Adjust for the difference between cols
@@ -51,7 +50,7 @@ export default function Bar({ color, start, end, date, width, verticalPositionMa
             setHeight(height);
             setDisplay(true);
         }
-    }, [width, startTime, endTime]);
+    }, [width, startTime, endTime, date]);
 
     return display ? (
         <Rnd
