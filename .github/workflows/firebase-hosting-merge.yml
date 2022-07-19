@@ -15,6 +15,6 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WEEKLY_SCHEDULE_MANAGER }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WEEKLY_SCHEDULE_MANAGER_DEMO }}'
           channelId: live
-          projectId: weekly-schedule-manager
+          projectId: weekly-schedule-manager-demo
